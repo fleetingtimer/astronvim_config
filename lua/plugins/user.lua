@@ -1,4 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- You can also add or configure plugins by creating files in this `plugins/` folder
 -- Here are some examples:
@@ -40,7 +40,7 @@ return {
   },
 
   -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim", enabled = false },
+  { "max397574/better-escape.nvim", enabled = true },
 
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
@@ -82,4 +82,88 @@ return {
       )
     end,
   },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
+  {
+
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+    event = "VeryLazy",
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+  {
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html",
+    dependencies = {
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim", -- required by telescope
+        "MunifTanjim/nui.nvim",
+
+        -- optional
+        "nvim-treesitter/nvim-treesitter",
+        "rcarriga/nvim-notify",
+        "nvim-tree/nvim-web-devicons",
+    },
+    lazy = leet_arg ~= vim.fn.argv()[1],
+    opts = {
+      arg = leet_arg,
+      ---@type lc.lang
+      lang = "golang",
+    },
+  },
+  {
+    "kevinhwang91/nvim-hlslens",
+    config = function()
+      require('hlslens').setup()
+      local kopts = {noremap = true, silent = true}
+
+      vim.api.nvim_set_keymap('n', 'n',
+        [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+       kopts)
+      vim.api.nvim_set_keymap('n', 'N',
+        [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+       kopts)
+      vim.api.nvim_set_keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+
+      vim.api.nvim_set_keymap('n', '<Leader>l', '<Cmd>noh<CR>', kopts)
+    end,
+    event = "VeryLazy",
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    dependencies = {
+      "nvim-lua/plenary.nvim"
+    },
+    config = function()
+      require("spectre").setup()
+    end,
+  }
 }
